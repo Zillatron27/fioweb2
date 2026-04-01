@@ -33,9 +33,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {username && (
           <div className={styles.userInfo}>
             <span className={styles.username}>{username}</span>
-            <span className="badge">
-              {isAdmin ? '\u2605 Admin' : '\u2022 Standard'}
-            </span>
+            {isAdmin && <span className="badge">{'\u2605'} Admin</span>}
           </div>
         )}
 

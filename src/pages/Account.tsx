@@ -37,14 +37,14 @@ export function Account() {
               <dt>Username</dt>
               <dd>{username}</dd>
             </div>
-            <div className={styles.detailRow}>
-              <dt>Account Type</dt>
-              <dd>
-                <span className="badge">
-                  {isAdmin ? '\u2605 Administrator' : '\u2022 Standard'}
-                </span>
-              </dd>
-            </div>
+            {isAdmin && (
+              <div className={styles.detailRow}>
+                <dt>Account Type</dt>
+                <dd>
+                  <span className="badge">{'\u2605'} Administrator</span>
+                </dd>
+              </div>
+            )}
             <div className={styles.detailRow}>
               <dt>Discord</dt>
               <dd className={discordLoading ? styles.loading : ''}>
