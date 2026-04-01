@@ -51,8 +51,7 @@ export function Login() {
         <h1 className={styles.title}>Log in to FIO</h1>
 
         <div className="alert alert-warning" style={{ marginBottom: 20 }}>
-          This is <strong>NOT</strong> your APEX login. This is your FIO
-          account, used by community tools to access your game data.
+          This is <strong>NOT</strong> your APEX login.
         </div>
 
         {error && (
@@ -85,6 +84,11 @@ export function Login() {
               required
             />
           </div>
+
+          <label className={styles.rememberMe}>
+            <input type="checkbox" />
+            <span>Remember me</span>
+          </label>
 
           <button
             type="submit"

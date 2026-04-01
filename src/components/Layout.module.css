@@ -42,9 +42,18 @@
 }
 
 .mobileTitle {
-  font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.25rem;
+}
+
+.mobileBrand {
+  font-weight: 700;
   color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.mobileBrandSub {
+  font-weight: 300;
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

@@ -9,10 +9,10 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const THEMES: { value: Theme; label: string }[] = [
-  { value: 'dark', label: 'Dark' },
-  { value: 'light', label: 'Light' },
-  { value: 'colorblind', label: 'Colorblind' },
+const THEMES: { value: Theme; symbol: string; title: string }[] = [
+  { value: 'dark', symbol: '\u263E', title: 'Dark' },
+  { value: 'light', symbol: '\u2600', title: 'Light' },
+  { value: 'colorblind', symbol: '\u25D1', title: 'Colorblind' },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -116,8 +116,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   className={`${styles.themeBtn} ${theme === t.value ? styles.themeBtnActive : ''}`}
                   onClick={() => setTheme(t.value)}
                   aria-pressed={theme === t.value}
+                  aria-label={t.title}
+                  title={t.title}
                 >
-                  {t.label}
+                  <span style={{
+                    ...(t.value === 'dark' ? { marginLeft: 4 } : {}),
+                    ...(t.value === 'colorblind' ? { position: 'relative' as const, top: -2 } : {}),
+                  }}>{t.symbol}</span>
                 </button>
               ))}
             </div>

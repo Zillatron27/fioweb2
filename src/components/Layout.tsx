@@ -22,7 +22,10 @@ export function Layout() {
             <span className={styles.hamburgerLine} />
             <span className={styles.hamburgerLine} />
           </button>
-          <span className={styles.mobileTitle}>FIOWeb</span>
+          <span className={styles.mobileTitle}>
+            <span className={styles.mobileBrand}>FIO</span>
+            <span className={styles.mobileBrandSub}>Web</span>
+          </span>
         </header>
 
         <main className={styles.content}>

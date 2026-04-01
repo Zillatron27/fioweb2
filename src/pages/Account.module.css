@@ -48,15 +48,18 @@
 
 .links {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .quickLink {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
   min-height: var(--touch-min);
   padding: 10px 12px;
+  white-space: nowrap;
   border-radius: var(--radius-md);
   background: var(--bg-tertiary);
   color: var(--accent);

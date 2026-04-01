@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
+  width: 100%;
 }
 
 .formCard {
@@ -31,6 +32,23 @@
   font-weight: 500;
   color: var(--text-secondary);
   margin-bottom: 6px;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.rememberMe input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 .footer {

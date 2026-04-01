@@ -25,7 +25,7 @@
 .brandSub {
   font-size: 1.5rem;
   font-weight: 300;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .userInfo {
@@ -92,8 +92,9 @@
 }
 
 .themeSwitch {
-  padding: 0 8px;
   margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .themeButtons {
@@ -106,11 +107,11 @@
   flex: 1;
   min-height: 36px;
   padding: 6px 4px;
-  font-size: 0.6875rem;
+  font-size: 1.75rem;
   font-weight: 500;
   border-radius: var(--radius-sm);
   background: var(--bg-tertiary);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   border: 1px solid transparent;
   cursor: pointer;
   transition: background-color 0.15s, color 0.15s;
@@ -127,11 +128,16 @@
 }
 
 .logoutBtn {
-  color: var(--text-secondary);
+  justify-content: center;
+  font-weight: 600;
+  color: var(--negative);
+  border: 1px solid var(--negative);
+  border-radius: var(--radius-md);
 }
 
 .logoutBtn:hover {
-  color: var(--negative);
+  background: var(--negative);
+  color: #ffffff;
 }
 
 /* Backdrop for mobile overlay */
