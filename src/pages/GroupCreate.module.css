@@ -1,0 +1,122 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.field {
+  margin-bottom: 16px;
+  max-width: 480px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.optional {
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+.idRow {
+  display: flex;
+  gap: 8px;
+}
+
+.idAvailable {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  color: var(--positive);
+}
+
+.idTaken {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  color: var(--negative);
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.inviteBuilder {
+  margin-bottom: 12px;
+}
+
+.inviteRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.adminToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  min-height: var(--touch-min);
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.inviteList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inviteItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+
+.removeBtn {
+  margin-left: auto;
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+}
+
+.removeBtn:hover {
+  color: var(--negative);
+  background: var(--bg-secondary);
+}

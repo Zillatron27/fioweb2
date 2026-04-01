@@ -1,0 +1,88 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.muted {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.inviteList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inviteCard {
+  /* override card padding for nested layout */
+}
+
+.inviteHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.inviteInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.groupName {
+  font-weight: 600;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.inviteMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.permCount {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.inviteActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.permPanel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 768px) {
+  .inviteHeader {
+    flex-direction: column;
+  }
+
+  .inviteActions {
+    width: 100%;
+  }
+
+  .inviteActions .btn {
+    flex: 1;
+  }
+}

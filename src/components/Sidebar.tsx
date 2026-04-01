@@ -71,6 +71,38 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               API Keys
             </NavLink>
           </div>
+
+          <div className={styles.navGroup}>
+            <span className={styles.navGroupLabel}>Data Sharing</span>
+            <NavLink
+              to="/permissions"
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              Permissions
+            </NavLink>
+            <NavLink
+              to="/groups"
+              end
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              Groups
+            </NavLink>
+            <NavLink
+              to="/groups/invites"
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              Invitations
+            </NavLink>
+          </div>
         </nav>
 
         <div className={styles.bottom}>

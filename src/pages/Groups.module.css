@@ -1,0 +1,90 @@
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.count {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.muted {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.inviteBanner {
+  display: block;
+  margin-bottom: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.inviteBanner:hover {
+  opacity: 0.9;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.groupList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.groupCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+
+.groupCard:hover {
+  border-color: var(--accent);
+}
+
+.groupInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.groupName {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.groupMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.groupId {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.permCount {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.arrow {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
