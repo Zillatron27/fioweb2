@@ -2,7 +2,7 @@
 
 Account management portal for the [FIO](https://doc.fnar.net) ecosystem — the community data API for [Prosperous Universe](https://prosperousuniverse.com).
 
-Manage your FIO account, API keys, data sharing permissions, and groups so that community tools can access your game data.
+Manage your FIO account, API keys, data sharing permissions and groups so that community tools can access your game data.
 
 ## Features
 
