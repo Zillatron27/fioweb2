@@ -30,9 +30,16 @@ export function Register() {
           <h1 className={styles.title}>Register for FIO</h1>
 
           <div className="alert alert-warning" style={{ marginBottom: 20 }}>
-            <strong>Registration requires the FIO extension.</strong> Open
-            Prosperous Universe with the FIO extension installed, and it will
-            generate a registration link that brings you here automatically.
+            <strong>Registration requires the FIO browser extension.</strong>
+            <ol style={{ margin: '12px 0 0', paddingLeft: 20, lineHeight: 1.8 }}>
+              <li>Install the FIO extension for{' '}
+                <a href="https://chromewebstore.google.com/detail/honhnhpbngledkpkocmeihfgkfmocmkh" target="_blank" rel="noopener noreferrer">Chrome</a>
+                {' '}or{' '}
+                <a href="https://addons.mozilla.org/en-US/firefox/addon/fio/" target="_blank" rel="noopener noreferrer">Firefox</a>
+              </li>
+              <li>Log into the extension inside APEX (Prosperous Universe)</li>
+              <li>The extension will redirect you here to complete registration</li>
+            </ol>
           </div>
 
           <p className={styles.footer}>
@@ -82,8 +89,9 @@ export function Register() {
         <h1 className={styles.title}>Register for FIO</h1>
 
         <div className="alert alert-warning" style={{ marginBottom: 20 }}>
-          <strong>Important:</strong> Do not reuse your APEX (Prosperous
-          Universe) password. Choose a unique password for your FIO account.
+          Your UserName is identical to your game UserName. It is strongly
+          suggested that you use a unique password or password manager.{' '}
+          <strong>DO NOT</strong> use the same password here that you do for APEX.
         </div>
 
         {error && (
@@ -135,7 +143,7 @@ export function Register() {
             style={{ width: '100%' }}
             disabled={loading}
           >
-            {loading ? 'Registering\u2026' : 'Register'}
+            {loading ? 'Registering…' : 'Register'}
           </button>
         </form>
 
