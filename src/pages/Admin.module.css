@@ -1,0 +1,110 @@
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.section {
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.inlineForm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.inlineInput {
+  flex: 1;
+  min-width: 180px;
+}
+
+.resultExists {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--positive);
+}
+
+.resultNotFound {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.toggleRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.toggleLabel input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.dangerZone {
+  border: 1px solid var(--negative);
+  max-width: none;
+}
+
+.clearGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.clearBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 12px !important;
+  text-align: left;
+  min-height: 64px;
+}
+
+.clearLabel {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.clearDesc {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import type { Theme } from '../context/ThemeContext';
 import { useInvites } from '../context/InviteContext';
+import { DEV_FORCE_ADMIN } from './AdminRoute';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -70,6 +71,24 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             >
               API Keys
             </NavLink>
+            <NavLink
+              to="/account/settings"
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              Settings
+            </NavLink>
+            <NavLink
+              to="/account/webhooks"
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              Webhooks
+            </NavLink>
           </div>
 
           <div className={styles.navGroup}>
@@ -106,6 +125,21 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               )}
             </NavLink>
           </div>
+
+          {(isAdmin || DEV_FORCE_ADMIN) && (
+            <div className={styles.navGroup}>
+              <span className={styles.navGroupLabel}>Admin</span>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive ? styles.active : ''}`
+                }
+                onClick={onClose}
+              >
+                Admin Panel
+              </NavLink>
+            </div>
+          )}
         </nav>
 
         <div className={styles.bottom}>

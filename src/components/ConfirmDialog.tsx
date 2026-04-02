@@ -9,6 +9,7 @@ interface ConfirmDialogProps {
   onConfirm: (password?: string) => void;
   onCancel: () => void;
   requirePassword?: boolean;
+  requireConfirmText?: string;
   destructive?: boolean;
 }
 
@@ -20,10 +21,12 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
   requirePassword = false,
+  requireConfirmText,
   destructive = false,
 }: ConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [password, setPassword] = useState('');
+  const [confirmText, setConfirmText] = useState('');
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -31,6 +34,7 @@ export function ConfirmDialog({
 
     if (open && !dialog.open) {
       setPassword('');
+      setConfirmText('');
       dialog.showModal();
     } else if (!open && dialog.open) {
       dialog.close();
@@ -43,8 +47,13 @@ export function ConfirmDialog({
 
   const handleCancel = () => {
     setPassword('');
+    setConfirmText('');
     onCancel();
   };
+
+  const confirmDisabled =
+    (requirePassword && !password) ||
+    (requireConfirmText !== undefined && confirmText !== requireConfirmText);
 
   return (
     <dialog
@@ -71,6 +80,22 @@ export function ConfirmDialog({
         </div>
       )}
 
+      {requireConfirmText !== undefined && (
+        <div className={styles.field}>
+          <label htmlFor="confirm-text" className={styles.label}>
+            Type <strong>{requireConfirmText}</strong> to confirm
+          </label>
+          <input
+            id="confirm-text"
+            type="text"
+            value={confirmText}
+            onChange={(e) => setConfirmText(e.target.value)}
+            placeholder={requireConfirmText}
+            autoComplete="off"
+          />
+        </div>
+      )}
+
       <div className={styles.actions}>
         <button
           type="button"
@@ -83,7 +108,7 @@ export function ConfirmDialog({
           type="button"
           className={`btn ${destructive ? 'btn-danger' : 'btn-primary'}`}
           onClick={handleConfirm}
-          disabled={requirePassword && !password}
+          disabled={confirmDisabled}
         >
           {confirmLabel}
         </button>

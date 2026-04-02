@@ -46,6 +46,37 @@
   color: var(--text-secondary);
 }
 
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editInput {
+  width: 160px;
+  font-size: 0.875rem !important;
+  padding: 4px 8px !important;
+  min-height: auto !important;
+}
+
+.editableValue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editBtn {
+  font-size: 0.75rem;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.editBtn:hover {
+  background: var(--accent-muted);
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;

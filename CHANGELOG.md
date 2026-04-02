@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.3.0 — 2026-04-02
+
+### Phase 3: Account settings, webhooks, and admin panel
+- Discord name inline editing on Account overview page
+- Account Settings page: anonymous data collection preference, selective game data reset (10 categories), account deletion with two-step password confirmation
+- Webhooks page: display/set/delete webhook URL, handles 406 for non-bot accounts (save currently disabled pending API verification)
+- Admin panel: check user, create account (with admin/bot flags), delete account, 7 data management clear operations with type-to-confirm safety
+- AdminRoute guard component with dev override for UI testing
+- ConfirmDialog now supports `requireConfirmText` for type-to-confirm destructive actions
+
+### Cleanup
+- Removed mock data layer (`mock.ts`) and all `USE_MOCK` references
+- API modules (`auth.ts`, `apikeys.ts`, `permissions.ts`, `groups.ts`) simplified to direct API calls
+
+### Routing & navigation
+- New sidebar links: Settings, Webhooks, Admin Panel (admin-only)
+- New routes: `/account/settings`, `/account/webhooks`, `/admin`
+- UserAutocomplete added to admin check user and delete account fields
+
 ## 0.2.0 — 2026-04-02
 
 ### Live API integration
