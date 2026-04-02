@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 — 2026-04-02
+
+### Registration page
+- Updated password warning to match official FIO wording
+- Missing-params page now explains the extension flow with numbered steps
+- Added direct links to Chrome Web Store and Firefox Add-ons for the FIO extension
+
 ## 0.3.0 — 2026-04-02
 
 ### Phase 3: Account settings, webhooks, and admin panel
