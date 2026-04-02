@@ -19,6 +19,8 @@ import { GroupDetail } from './pages/GroupDetail';
 import { GroupCreate } from './pages/GroupCreate';
 import { GroupInvites } from './pages/GroupInvites';
 import { Admin } from './pages/Admin';
+import { Setup } from './pages/Setup';
+import { DataOverview } from './pages/DataOverview';
 
 export function App() {
   return (
@@ -31,6 +33,7 @@ export function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/setup" element={<Setup />} />
 
             {/* Protected routes — sidebar layout */}
             <Route element={<ProtectedRoute />}>
@@ -40,6 +43,7 @@ export function App() {
                 <Route path="/account/apikeys" element={<ApiKeys />} />
                 <Route path="/account/settings" element={<AccountSettings />} />
                 <Route path="/account/webhooks" element={<Webhooks />} />
+                <Route path="/account/data" element={<DataOverview />} />
                 <Route path="/permissions" element={<PermissionsPage />} />
                 <Route path="/groups" element={<Groups />} />
                 <Route path="/groups/create" element={<GroupCreate />} />

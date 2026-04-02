@@ -72,6 +72,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               API Keys
             </NavLink>
             <NavLink
+              to="/account/data"
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ''}`
+              }
+              onClick={onClose}
+            >
+              My Data
+            </NavLink>
+            <NavLink
               to="/account/settings"
               className={({ isActive }) =>
                 `${styles.navLink} ${isActive ? styles.active : ''}`

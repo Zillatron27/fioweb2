@@ -147,6 +147,10 @@ export function Register() {
           </button>
         </form>
 
+        <p className={styles.footer} style={{ marginBottom: 8 }}>
+          After registering, log in and visit <Link to="/setup">Setup</Link> to
+          start collecting your game data.
+        </p>
         <p className={styles.footer}>
           Already have an account? <Link to="/login">Log in</Link>
         </p>

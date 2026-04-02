@@ -1,0 +1,73 @@
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.muted {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.companyCard {
+  margin-bottom: 24px;
+}
+
+.companyHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.companyName {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.companyMeta {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tileHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iconPresent {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--positive);
+}
+
+.iconEmpty {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.tileLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.tileTimestamp {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding-left: 26px;
+}

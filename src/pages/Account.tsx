@@ -149,6 +149,9 @@ export function Account() {
             <Link to="/account/apikeys" className={styles.quickLink}>
               Manage API Keys
             </Link>
+            <Link to="/account/data" className={styles.quickLink}>
+              My Data
+            </Link>
           </div>
         </div>
       </div>

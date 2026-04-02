@@ -29,9 +29,15 @@ function loadSession(): AuthSession | null {
   }
 }
 
+function loadAndSyncSession(): AuthSession | null {
+  const session = loadSession();
+  setAuthToken(session?.token ?? null);
+  return session;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [session, setSession] = useState<AuthSession | null>(loadSession);
+  const [session, setSession] = useState<AuthSession | null>(loadAndSyncSession);
 
   const logout = useCallback(() => {
     setSession(null);
