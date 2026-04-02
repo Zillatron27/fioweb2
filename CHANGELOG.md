@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.0 — 2026-04-02
+
+### Setup wizard
+- Post-registration onboarding at `/setup` — 4-step stepper with API polling
+- Step 1: Log in check (auto-completes if authenticated)
+- Steps 2-3: Poll sites and workforces endpoints to confirm data flow from FIO extension
+- Step 4: Success with links to Account and Data Overview
+
+### Data Overview
+- New page at `/account/data` showing what data FIO has for the logged-in user
+- Company card with name, code, and faction
+- Category grid with tick/cross indicators and last-updated timestamps for 9 data types
+- Empty state directs users to Setup
+
+### Bug fixes
+- Fixed auth token race condition on page refresh — token now set synchronously during state initialization instead of in an effect, preventing 401-triggered session clearing
+- Fixed RetrievalResponse extraction — API returns lowercase username keys, now uses case-insensitive lookup
+- Fixed CX Orders field name (`CXOSs` not `CxOrders` in AllData response)
+
+### Navigation
+- Added "My Data" to sidebar and Account quick links
+- Added Setup mention on registration page
+- Setup is a public route (no sidebar) for pre-login accessibility
+
 ## 0.3.1 — 2026-04-02
 
 ### Registration page
