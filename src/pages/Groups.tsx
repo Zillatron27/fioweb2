@@ -45,7 +45,7 @@ export function Groups() {
     return (
       <div>
         <h1 className={styles.heading}>Groups</h1>
-        <p className={styles.muted}>Loading groups\u2026</p>
+        <p className={styles.muted}>Loading groups…</p>
       </div>
     );
   }
@@ -63,7 +63,7 @@ export function Groups() {
 
       {invites.length > 0 && (
         <Link to="/groups/invites" className={`alert alert-warning ${styles.inviteBanner}`}>
-          You have {invites.length} pending group invitation{invites.length > 1 ? 's' : ''}. View invitations \u2192
+          You have {invites.length} pending group invitation{invites.length > 1 ? 's' : ''}. View invitations →
         </Link>
       )}
 
@@ -100,7 +100,7 @@ export function Groups() {
                   </span>
                 </div>
               </div>
-              <span className={styles.arrow}>\u203a</span>
+              <span className={styles.arrow}>›</span>
             </Link>
           ))}
         </div>

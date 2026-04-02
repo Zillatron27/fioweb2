@@ -4,32 +4,32 @@ import type { PermissionResponse, Permissions } from '../types/permissions';
 import { emptyPermissions } from '../types/permissions';
 import type { GroupDetailResponse, InviteResponse } from '../types/groups';
 
-/** Set to false to use the real API. */
-export const USE_MOCK = true;
+/** Set to true to use mock data instead of the real API. */
+export const USE_MOCK = false;
 
 function mockPerms(overrides: Partial<Record<string, boolean>> = {}): Permissions {
   const p = emptyPermissions();
   if (overrides.ships) {
-    p.ShipPermissions.ShipInformation = true;
-    p.ShipPermissions.ShipFlight = true;
-    p.ShipPermissions.ShipInventory = true;
+    p.ShipPermissions.Information = true;
+    p.ShipPermissions.Flight = true;
+    p.ShipPermissions.Inventory = true;
   }
   if (overrides.sites) {
-    p.SitesPermissions.SitesLocation = true;
-    p.SitesPermissions.SitesBuildings = true;
-    p.SitesPermissions.SitesProductionLines = true;
+    p.SitesPermissions.Location = true;
+    p.SitesPermissions.Buildings = true;
+    p.SitesPermissions.ProductionLines = true;
   }
   if (overrides.storage) {
-    p.StoragePermissions.StorageLocation = true;
-    p.StoragePermissions.StorageInformation = true;
-    p.StoragePermissions.StorageItems = true;
+    p.StoragePermissions.Location = true;
+    p.StoragePermissions.Information = true;
+    p.StoragePermissions.Items = true;
   }
   if (overrides.trade) {
-    p.TradePermissions.TradeContract = true;
-    p.TradePermissions.TradeCXOS = true;
+    p.TradePermissions.Contract = true;
+    p.TradePermissions.CXOS = true;
   }
   if (overrides.company) {
-    p.CompanyPermissions.CompanyInfo = true;
+    p.CompanyPermissions.Info = true;
   }
   if (overrides.all) {
     for (const cat of Object.values(p)) {

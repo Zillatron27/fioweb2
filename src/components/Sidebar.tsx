@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import type { Theme } from '../context/ThemeContext';
+import { useInvites } from '../context/InviteContext';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -10,14 +11,15 @@ interface SidebarProps {
 }
 
 const THEMES: { value: Theme; symbol: string; title: string }[] = [
-  { value: 'dark', symbol: '\u263E', title: 'Dark' },
-  { value: 'light', symbol: '\u2600', title: 'Light' },
-  { value: 'colorblind', symbol: '\u25D1', title: 'Colorblind' },
+  { value: 'dark', symbol: '☾', title: 'Dark' },
+  { value: 'light', symbol: '☀', title: 'Light' },
+  { value: 'colorblind', symbol: '◑', title: 'Colorblind' },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { username, isAdmin, logout } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { inviteCount } = useInvites();
 
   return (
     <>
@@ -33,7 +35,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {username && (
           <div className={styles.userInfo}>
             <span className={styles.username}>{username}</span>
-            {isAdmin && <span className="badge">{'\u2605'} Admin</span>}
+            {isAdmin && <span className="badge">{'★'} Admin</span>}
           </div>
         )}
 
@@ -99,6 +101,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               onClick={onClose}
             >
               Invitations
+              {inviteCount > 0 && (
+                <span className={styles.badge}>{inviteCount}</span>
+              )}
             </NavLink>
           </div>
         </nav>

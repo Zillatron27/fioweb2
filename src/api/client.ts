@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://api.fnar.net';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? '/api' : 'https://api.fnar.net');
 
 let authToken: string | null = null;
 let unauthorizedHandler: (() => void) | null = null;

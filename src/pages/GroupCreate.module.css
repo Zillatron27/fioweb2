@@ -66,6 +66,12 @@
   margin-bottom: 12px;
 }
 
+.bulkActions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 .inviteBuilder {
   margin-bottom: 12px;
 }

@@ -5,9 +5,11 @@ import { ApiError } from '../api/client';
 import { PermissionEditor } from '../components/PermissionEditor';
 import type { InviteResponse } from '../types/groups';
 import { countEnabled } from '../types/permissions';
+import { useInvites } from '../context/InviteContext';
 import styles from './GroupInvites.module.css';
 
 export function GroupInvites() {
+  const { refreshInvites } = useInvites();
   const [invites, setInvites] = useState<InviteResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +35,7 @@ export function GroupInvites() {
     try {
       await acceptInvite(groupId);
       fetchInvites();
+      refreshInvites();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Failed to accept invite.');
     } finally {
@@ -45,6 +48,7 @@ export function GroupInvites() {
     try {
       await rejectInvite(groupId);
       fetchInvites();
+      refreshInvites();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Failed to reject invite.');
     } finally {
@@ -55,16 +59,16 @@ export function GroupInvites() {
   if (loading) {
     return (
       <div>
-        <Link to="/groups" className={styles.backLink}>{'\u2190'} Groups</Link>
+        <Link to="/groups" className={styles.backLink}>{'←'} Groups</Link>
         <h1 className={styles.heading}>Group Invitations</h1>
-        <p className={styles.muted}>Loading invitations\u2026</p>
+        <p className={styles.muted}>Loading invitations…</p>
       </div>
     );
   }
 
   return (
     <div>
-      <Link to="/groups" className={styles.backLink}>{'\u2190'} Groups</Link>
+      <Link to="/groups" className={styles.backLink}>{'←'} Groups</Link>
       <h1 className={styles.heading}>Group Invitations</h1>
 
       {error && (
@@ -87,7 +91,7 @@ export function GroupInvites() {
                       #{invite.GroupId}
                     </span>
                     <span className="badge">
-                      {invite.Admin ? '\u2606 Admin' : '\u2022 Member'}
+                      {invite.Admin ? '☆ Admin' : '• Member'}
                     </span>
                     <span className={styles.permCount}>
                       {countEnabled(invite.Permissions)}/21 permissions

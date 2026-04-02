@@ -53,6 +53,24 @@
   margin-bottom: 16px;
 }
 
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.panel > * {
+  overflow: hidden;
+}
+
+.panelOpen {
+  grid-template-rows: 1fr;
+}
+
+.panelOpen > * {
+  overflow: visible;
+}
+
 .actionForm {
   margin-top: 16px;
   max-width: 480px;
@@ -97,31 +115,3 @@
   font-weight: 500;
 }
 
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 16px;
-}
-
-.inviteDialog {
-  max-width: 440px;
-  width: 100%;
-}
-
-.dialogTitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.dialogActions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  margin-top: 20px;
-}

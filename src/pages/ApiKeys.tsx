@@ -126,7 +126,7 @@ export function ApiKeys() {
     return (
       <div>
         <h1 className={styles.heading}>API Keys</h1>
-        <p className={styles.loadingText}>Loading API keys\u2026</p>
+        <p className={styles.loadingText}>Loading API keys…</p>
       </div>
     );
   }
@@ -146,8 +146,7 @@ export function ApiKeys() {
 
       {newKey && (
         <div className="alert alert-success" style={{ marginBottom: 16 }}>
-          <strong>New API key created.</strong> Copy it now — it won't be shown
-          in full again.
+          <strong>New API key created.</strong>
           <div className={styles.newKeyRow}>
             <code className="mono">{newKey}</code>
             <CopyButton text={newKey} label="Copy key" />
@@ -236,6 +235,7 @@ export function ApiKeys() {
                   value={createAppName}
                   onChange={(e) => setCreateAppName(e.target.value)}
                   placeholder="e.g. Helm, My Spreadsheet"
+                  autoComplete="off"
                   required
                   maxLength={128}
                 />

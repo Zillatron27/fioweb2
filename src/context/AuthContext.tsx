@@ -2,13 +2,6 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import { useNavigate } from 'react-router-dom';
 import type { AuthSession } from '../types/auth';
 import { setAuthToken, setOnUnauthorized } from '../api/client';
-import { USE_MOCK } from '../api/mock';
-
-const MOCK_SESSION: AuthSession = {
-  username: 'MockUser',
-  token: 'mock-jwt-token',
-  isAdmin: false,
-};
 
 interface AuthContextValue {
   username: string | null;
@@ -38,9 +31,7 @@ function loadSession(): AuthSession | null {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [session, setSession] = useState<AuthSession | null>(
-    USE_MOCK ? MOCK_SESSION : loadSession,
-  );
+  const [session, setSession] = useState<AuthSession | null>(loadSession);
 
   const logout = useCallback(() => {
     setSession(null);

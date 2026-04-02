@@ -1,40 +1,40 @@
 export interface ShipPermissions {
-  ShipInformation: boolean;
-  ShipRepair: boolean;
-  ShipFlight: boolean;
-  ShipInventory: boolean;
-  ShipFuelInventory: boolean;
+  Information: boolean;
+  Repair: boolean;
+  Flight: boolean;
+  Inventory: boolean;
+  FuelInventory: boolean;
 }
 
 export interface SitesPermissions {
-  SitesLocation: boolean;
-  SitesWorkforces: boolean;
-  SitesExperts: boolean;
-  SitesBuildings: boolean;
-  SitesRepair: boolean;
-  SitesReclaimable: boolean;
-  SitesProductionLines: boolean;
+  Location: boolean;
+  Workforces: boolean;
+  Experts: boolean;
+  Buildings: boolean;
+  Repair: boolean;
+  Reclaimable: boolean;
+  ProductionLines: boolean;
 }
 
 export interface StoragePermissions {
-  StorageLocation: boolean;
-  StorageInformation: boolean;
-  StorageItems: boolean;
+  Location: boolean;
+  Information: boolean;
+  Items: boolean;
 }
 
 export interface TradePermissions {
-  TradeContract: boolean;
-  TradeCXOS: boolean;
+  Contract: boolean;
+  CXOS: boolean;
 }
 
 export interface CompanyPermissions {
-  CompanyInfo: boolean;
-  CompanyLiquidCurrency: boolean;
-  CompanyHeadquarters: boolean;
+  Info: boolean;
+  LiquidCurrency: boolean;
+  Headquarters: boolean;
 }
 
 export interface MiscPermissions {
-  MiscShipmentTracking: boolean;
+  ShipmentTracking: boolean;
 }
 
 export interface Permissions {
@@ -62,37 +62,76 @@ export interface GrantPermissionRequest {
 export function emptyPermissions(): Permissions {
   return {
     ShipPermissions: {
-      ShipInformation: false,
-      ShipRepair: false,
-      ShipFlight: false,
-      ShipInventory: false,
-      ShipFuelInventory: false,
+      Information: false,
+      Repair: false,
+      Flight: false,
+      Inventory: false,
+      FuelInventory: false,
     },
     SitesPermissions: {
-      SitesLocation: false,
-      SitesWorkforces: false,
-      SitesExperts: false,
-      SitesBuildings: false,
-      SitesRepair: false,
-      SitesReclaimable: false,
-      SitesProductionLines: false,
+      Location: false,
+      Workforces: false,
+      Experts: false,
+      Buildings: false,
+      Repair: false,
+      Reclaimable: false,
+      ProductionLines: false,
     },
     StoragePermissions: {
-      StorageLocation: false,
-      StorageInformation: false,
-      StorageItems: false,
+      Location: false,
+      Information: false,
+      Items: false,
     },
     TradePermissions: {
-      TradeContract: false,
-      TradeCXOS: false,
+      Contract: false,
+      CXOS: false,
     },
     CompanyPermissions: {
-      CompanyInfo: false,
-      CompanyLiquidCurrency: false,
-      CompanyHeadquarters: false,
+      Info: false,
+      LiquidCurrency: false,
+      Headquarters: false,
     },
     MiscPermissions: {
-      MiscShipmentTracking: false,
+      ShipmentTracking: false,
+    },
+  };
+}
+
+/** Returns a Permissions object with all fields set to true. */
+export function fullPermissions(): Permissions {
+  return {
+    ShipPermissions: {
+      Information: true,
+      Repair: true,
+      Flight: true,
+      Inventory: true,
+      FuelInventory: true,
+    },
+    SitesPermissions: {
+      Location: true,
+      Workforces: true,
+      Experts: true,
+      Buildings: true,
+      Repair: true,
+      Reclaimable: true,
+      ProductionLines: true,
+    },
+    StoragePermissions: {
+      Location: true,
+      Information: true,
+      Items: true,
+    },
+    TradePermissions: {
+      Contract: true,
+      CXOS: true,
+    },
+    CompanyPermissions: {
+      Info: true,
+      LiquidCurrency: true,
+      Headquarters: true,
+    },
+    MiscPermissions: {
+      ShipmentTracking: true,
     },
   };
 }

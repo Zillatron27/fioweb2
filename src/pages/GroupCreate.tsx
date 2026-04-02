@@ -1,18 +1,33 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { createGroup } from '../api/groups';
 import { isGroupIdAvailable } from '../api/permissions';
 import { ApiError } from '../api/client';
 import { PermissionEditor } from '../components/PermissionEditor';
 import { UserAutocomplete } from '../components/UserAutocomplete';
 import type { Permissions } from '../types/permissions';
-import { emptyPermissions } from '../types/permissions';
+import { emptyPermissions, fullPermissions } from '../types/permissions';
 import type { GroupInvite } from '../types/groups';
 import styles from './GroupCreate.module.css';
 
+function parseValidationError(raw: string): string {
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed.errors) {
+      const messages = Object.values(parsed.errors).flat();
+      return messages.join(' ');
+    }
+    return parsed.title || raw;
+  } catch {
+    return raw;
+  }
+}
+
 export function GroupCreate() {
   const navigate = useNavigate();
+  const { username } = useAuth();
 
   const [groupName, setGroupName] = useState('');
   const [requestedId, setRequestedId] = useState('');
@@ -23,7 +38,7 @@ export function GroupCreate() {
   const [loading, setLoading] = useState(false);
 
   // Invite builder state
-  const [inviteUser, setInviteUser] = useState('');
+  const [inviteUsers, setInviteUsers] = useState<string[]>([]);
   const [inviteAdmin, setInviteAdmin] = useState(false);
 
   const checkId = useCallback(async (idStr: string) => {
@@ -37,10 +52,13 @@ export function GroupCreate() {
     setIdStatus(available ? 'available' : 'taken');
   }, []);
 
-  const addInvite = () => {
-    if (!inviteUser || invites.some((i) => i.UserName === inviteUser)) return;
-    setInvites([...invites, { UserName: inviteUser, Admin: inviteAdmin }]);
-    setInviteUser('');
+  const addInvites = () => {
+    if (inviteUsers.length === 0) return;
+    const newInvites = inviteUsers
+      .filter((u) => !invites.some((i) => i.UserName === u))
+      .map((u) => ({ UserName: u, Admin: inviteAdmin }));
+    setInvites([...invites, ...newInvites]);
+    setInviteUsers([]);
     setInviteAdmin(false);
   };
 
@@ -68,6 +86,8 @@ export function GroupCreate() {
       if (err instanceof ApiError) {
         if (err.status === 406) {
           setError('Maximum of 10 groups reached, or the requested ID is taken.');
+        } else if (err.status === 400) {
+          setError(parseValidationError(err.message));
         } else {
           setError(err.message || 'Failed to create group.');
         }
@@ -97,12 +117,14 @@ export function GroupCreate() {
             value={groupName}
             onChange={(e) => setGroupName(e.target.value)}
             required
+            minLength={3}
+            maxLength={16}
           />
         </div>
 
         <div className={styles.field}>
           <label htmlFor="requested-id">
-            Requested ID <span className={styles.optional}>(optional, 1\u2013999999)</span>
+            Requested ID <span className={styles.optional}>(optional, 1–999999)</span>
           </label>
           <div className={styles.idRow}>
             <input
@@ -141,9 +163,11 @@ export function GroupCreate() {
             <div className={styles.inviteRow}>
               <div style={{ flex: 1 }}>
                 <UserAutocomplete
-                  value={inviteUser}
-                  onChange={setInviteUser}
-                  placeholder="Search user to invite\u2026"
+                  multi
+                  value={inviteUsers}
+                  onChange={setInviteUsers}
+                  placeholder="Search user to invite…"
+                  exclude={[username ?? '', ...invites.map((i) => i.UserName)]}
                 />
               </div>
               <label className={styles.adminToggle}>
@@ -158,8 +182,8 @@ export function GroupCreate() {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={addInvite}
-                disabled={!inviteUser}
+                onClick={addInvites}
+                disabled={inviteUsers.length === 0}
               >
                 Add
               </button>
@@ -191,6 +215,22 @@ export function GroupCreate() {
           <p className={styles.hint}>
             These permissions define what data group members share with each other.
           </p>
+          <div className={styles.bulkActions}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setPermissions(fullPermissions())}
+            >
+              Select All
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setPermissions(emptyPermissions())}
+            >
+              Clear All
+            </button>
+          </div>
           <PermissionEditor permissions={permissions} onChange={setPermissions} />
         </section>
 

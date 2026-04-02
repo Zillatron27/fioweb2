@@ -20,16 +20,17 @@ export function GroupDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Action panels — only one open at a time
+  const [activePanel, setActivePanel] = useState<'invite' | 'kick' | 'promote' | null>(null);
+
   // Invite form
-  const [showInvite, setShowInvite] = useState(false);
-  const [inviteUser, setInviteUser] = useState('');
+  const [invitePending, setInvitePending] = useState<string[]>([]);
   const [inviteAsAdmin, setInviteAsAdmin] = useState(false);
   const [inviteError, setInviteError] = useState<string | null>(null);
   const [inviteLoading, setInviteLoading] = useState(false);
 
   // Kick/promote form
   const [actionUser, setActionUser] = useState('');
-  const [actionType, setActionType] = useState<'kick' | 'promote' | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
   // Delete/leave confirmations
@@ -62,17 +63,30 @@ export function GroupDetail() {
 
   useEffect(() => { fetchGroup(); }, [fetchGroup]);
 
+  const togglePanel = (panel: 'invite' | 'kick' | 'promote') => {
+    if (activePanel === panel) {
+      setActivePanel(null);
+    } else {
+      setActivePanel(panel);
+      setInvitePending([]);
+      setInviteAsAdmin(false);
+      setInviteError(null);
+      setActionUser('');
+      setActionError(null);
+    }
+  };
+
   const handleInvite = async () => {
-    if (!inviteUser) return;
+    if (invitePending.length === 0) return;
     setInviteError(null);
     setInviteLoading(true);
     try {
       await inviteUsers({
         GroupId: gid,
-        Invites: [{ UserName: inviteUser, Admin: inviteAsAdmin }],
+        Invites: invitePending.map((u) => ({ UserName: u, Admin: inviteAsAdmin })),
       });
-      setShowInvite(false);
-      setInviteUser('');
+      setActivePanel(null);
+      setInvitePending([]);
       setInviteAsAdmin(false);
     } catch (err) {
       setInviteError(err instanceof ApiError ? err.message : 'Failed to send invite.');
@@ -82,18 +96,18 @@ export function GroupDetail() {
   };
 
   const handleAction = async () => {
-    if (!actionUser || !actionType) return;
+    if (!actionUser || !activePanel) return;
     setActionError(null);
     try {
-      if (actionType === 'kick') {
+      if (activePanel === 'kick') {
         await kickMember(gid, actionUser);
       } else {
         await promoteMember(gid, actionUser);
       }
       setActionUser('');
-      setActionType(null);
+      setActivePanel(null);
     } catch (err) {
-      setActionError(err instanceof ApiError ? err.message : `Failed to ${actionType} user.`);
+      setActionError(err instanceof ApiError ? err.message : `Failed to ${activePanel} user.`);
     }
   };
 
@@ -118,16 +132,16 @@ export function GroupDetail() {
   };
 
   const ROLE_LABELS: Record<GroupRole, string> = {
-    owner: '\u2605 Owner',
-    admin: '\u2606 Admin',
-    member: '\u2022 Member',
+    owner: '★ Owner',
+    admin: '☆ Admin',
+    member: '• Member',
   };
 
   if (loading) {
     return (
       <div>
-        <Link to="/groups" className={styles.backLink}>\u2190 Groups</Link>
-        <h1 className={styles.heading}>Loading\u2026</h1>
+        <Link to="/groups" className={styles.backLink}>← Groups</Link>
+        <h1 className={styles.heading}>Loading…</h1>
       </div>
     );
   }
@@ -135,7 +149,7 @@ export function GroupDetail() {
   if (!group) {
     return (
       <div>
-        <Link to="/groups" className={styles.backLink}>\u2190 Groups</Link>
+        <Link to="/groups" className={styles.backLink}>← Groups</Link>
         <div className="alert alert-error">{error || 'Group not found.'}</div>
       </div>
     );
@@ -143,7 +157,7 @@ export function GroupDetail() {
 
   return (
     <div>
-      <Link to="/groups" className={styles.backLink}>\u2190 Groups</Link>
+      <Link to="/groups" className={styles.backLink}>← Groups</Link>
 
       <div className={styles.header}>
         <div>
@@ -162,12 +176,6 @@ export function GroupDetail() {
         <div className="alert alert-error" style={{ marginBottom: 16 }}>{error}</div>
       )}
 
-      {/* Permissions */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Permissions</h2>
-        <PermissionEditor permissions={group.Permissions} readOnly />
-      </section>
-
       {/* Actions */}
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Actions</h2>
@@ -176,11 +184,8 @@ export function GroupDetail() {
           {(role === 'owner' || role === 'admin') && (
             <button
               type="button"
-              className="btn btn-primary"
-              onClick={() => {
-                setShowInvite(true);
-                setInviteError(null);
-              }}
+              className={`btn ${activePanel === 'invite' ? 'btn-secondary' : 'btn-primary'}`}
+              onClick={() => togglePanel('invite')}
             >
               Invite User
             </button>
@@ -189,11 +194,8 @@ export function GroupDetail() {
           {(role === 'owner' || role === 'admin') && (
             <button
               type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                setActionType('kick');
-                setActionError(null);
-              }}
+              className={`btn ${activePanel === 'kick' ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => togglePanel('kick')}
             >
               Kick User
             </button>
@@ -202,11 +204,8 @@ export function GroupDetail() {
           {role === 'owner' && (
             <button
               type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                setActionType('promote');
-                setActionError(null);
-              }}
+              className={`btn ${activePanel === 'promote' ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => togglePanel('promote')}
             >
               Promote to Admin
             </button>
@@ -233,91 +232,133 @@ export function GroupDetail() {
           )}
         </div>
 
-        {/* Kick / Promote form */}
-        {actionType && (
-          <div className={`card ${styles.actionForm}`}>
-            <h3 className={styles.actionFormTitle}>
-              {actionType === 'kick' ? 'Kick User' : 'Promote to Admin'}
-            </h3>
-            {actionError && (
-              <div className="alert alert-error" style={{ marginBottom: 12 }}>{actionError}</div>
-            )}
-            <div className={styles.field}>
-              <label htmlFor="action-user">Username</label>
-              <UserAutocomplete
-                id="action-user"
-                value={actionUser}
-                onChange={setActionUser}
-              />
+        {/* Invite panel */}
+        <div className={`${styles.panel} ${activePanel === 'invite' ? styles.panelOpen : ''}`}>
+          {activePanel === 'invite' && (
+            <div className={`card ${styles.actionForm}`}>
+              {inviteError && (
+                <div className="alert alert-error" style={{ marginBottom: 12 }}>{inviteError}</div>
+              )}
+              <div className={styles.field}>
+                <label htmlFor="invite-user">Users to invite</label>
+                <UserAutocomplete
+                  multi
+                  id="invite-user"
+                  value={invitePending}
+                  onChange={setInvitePending}
+                  placeholder="Search users…"
+                />
+              </div>
+              {role === 'owner' && (
+                <label className={styles.toggleField}>
+                  <span>Invite as Admin</span>
+                  <input
+                    type="checkbox"
+                    checked={inviteAsAdmin}
+                    onChange={(e) => setInviteAsAdmin(e.target.checked)}
+                    style={{ width: 20, height: 20, accentColor: 'var(--accent)' }}
+                  />
+                </label>
+              )}
+              <div className={styles.actionFormButtons}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setActivePanel(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleInvite}
+                  disabled={invitePending.length === 0 || inviteLoading}
+                >
+                  {inviteLoading ? 'Sending…' : 'Send Invites'}
+                </button>
+              </div>
             </div>
-            <div className={styles.actionFormButtons}>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => { setActionType(null); setActionUser(''); }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={`btn ${actionType === 'kick' ? 'btn-danger' : 'btn-primary'}`}
-                onClick={handleAction}
-                disabled={!actionUser}
-              >
-                {actionType === 'kick' ? 'Kick' : 'Promote'}
-              </button>
+          )}
+        </div>
+
+        {/* Kick panel */}
+        <div className={`${styles.panel} ${activePanel === 'kick' ? styles.panelOpen : ''}`}>
+          {activePanel === 'kick' && (
+            <div className={`card ${styles.actionForm}`}>
+              {actionError && (
+                <div className="alert alert-error" style={{ marginBottom: 12 }}>{actionError}</div>
+              )}
+              <div className={styles.field}>
+                <label htmlFor="kick-user">Username</label>
+                <UserAutocomplete
+                  id="kick-user"
+                  value={actionUser}
+                  onChange={setActionUser}
+                />
+              </div>
+              <div className={styles.actionFormButtons}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setActivePanel(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={handleAction}
+                  disabled={!actionUser}
+                >
+                  Kick
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Promote panel */}
+        <div className={`${styles.panel} ${activePanel === 'promote' ? styles.panelOpen : ''}`}>
+          {activePanel === 'promote' && (
+            <div className={`card ${styles.actionForm}`}>
+              {actionError && (
+                <div className="alert alert-error" style={{ marginBottom: 12 }}>{actionError}</div>
+              )}
+              <div className={styles.field}>
+                <label htmlFor="promote-user">Username</label>
+                <UserAutocomplete
+                  id="promote-user"
+                  value={actionUser}
+                  onChange={setActionUser}
+                />
+              </div>
+              <div className={styles.actionFormButtons}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setActivePanel(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleAction}
+                  disabled={!actionUser}
+                >
+                  Promote
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </section>
 
-      {/* Invite dialog */}
-      {showInvite && (
-        <div className={styles.overlay}>
-          <div className={`card ${styles.inviteDialog}`}>
-            <h2 className={styles.dialogTitle}>Invite User</h2>
-            {inviteError && (
-              <div className="alert alert-error" style={{ marginBottom: 12 }}>{inviteError}</div>
-            )}
-            <div className={styles.field}>
-              <label htmlFor="invite-user">Username</label>
-              <UserAutocomplete
-                id="invite-user"
-                value={inviteUser}
-                onChange={setInviteUser}
-              />
-            </div>
-            {role === 'owner' && (
-              <label className={styles.toggleField}>
-                <span>Invite as Admin</span>
-                <input
-                  type="checkbox"
-                  checked={inviteAsAdmin}
-                  onChange={(e) => setInviteAsAdmin(e.target.checked)}
-                  style={{ width: 20, height: 20, accentColor: 'var(--accent)' }}
-                />
-              </label>
-            )}
-            <div className={styles.dialogActions}>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setShowInvite(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleInvite}
-                disabled={!inviteUser || inviteLoading}
-              >
-                {inviteLoading ? 'Sending\u2026' : 'Send Invite'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Permissions */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Permissions</h2>
+        <PermissionEditor permissions={group.Permissions} readOnly />
+      </section>
 
       <ConfirmDialog
         open={confirmLeave}

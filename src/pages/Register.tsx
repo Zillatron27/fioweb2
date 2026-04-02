@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import * as authApi from '../api/auth';
 import { ApiError } from '../api/client';
@@ -8,16 +8,39 @@ import styles from './AuthForm.module.css';
 export function Register() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [username, setUsername] = useState('');
+  const userName = searchParams.get('UserName');
+  const registrationGuid = searchParams.get('RegistrationGuid');
+  const hasParams = userName !== null && registrationGuid !== null;
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [registrationGuid, setRegistrationGuid] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated) {
     return <Navigate to="/account" replace />;
+  }
+
+  if (!hasParams) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.formCard}>
+          <h1 className={styles.title}>Register for FIO</h1>
+
+          <div className="alert alert-warning" style={{ marginBottom: 20 }}>
+            <strong>Registration requires the FIO extension.</strong> Open
+            Prosperous Universe with the FIO extension installed, and it will
+            generate a registration link that brings you here automatically.
+          </div>
+
+          <p className={styles.footer}>
+            Already have an account? <Link to="/login">Log in</Link>
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,7 +56,7 @@ export function Register() {
 
     try {
       await authApi.register({
-        UserName: username,
+        UserName: userName,
         Password: password,
         RegistrationGuid: registrationGuid,
       });
@@ -42,7 +65,7 @@ export function Register() {
       if (err instanceof ApiError) {
         setError(
           err.status === 401
-            ? 'Invalid registration code. Make sure you started registration from the FIO extension first.'
+            ? 'Invalid registration link. Make sure you started registration from the FIO extension first.'
             : err.message || 'Registration failed.'
         );
       } else {
@@ -59,9 +82,8 @@ export function Register() {
         <h1 className={styles.title}>Register for FIO</h1>
 
         <div className="alert alert-warning" style={{ marginBottom: 20 }}>
-          <strong>Before you register:</strong> You need the FIO extension
-          installed in your browser. Open Prosperous Universe, and the extension
-          will provide a Registration Code (GUID) that you need below.
+          <strong>Important:</strong> Do not reuse your APEX (Prosperous
+          Universe) password. Choose a unique password for your FIO account.
         </div>
 
         {error && (
@@ -76,12 +98,9 @@ export function Register() {
             <input
               id="username"
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userName}
+              readOnly
               autoComplete="username"
-              required
-              minLength={3}
-              maxLength={32}
             />
           </div>
 
@@ -106,19 +125,6 @@ export function Register() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               autoComplete="new-password"
-              required
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="registration-guid">Registration Code</label>
-            <input
-              id="registration-guid"
-              type="text"
-              value={registrationGuid}
-              onChange={(e) => setRegistrationGuid(e.target.value)}
-              placeholder="GUID from the FIO extension"
-              className="mono"
               required
             />
           </div>

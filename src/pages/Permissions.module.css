@@ -121,6 +121,32 @@
   margin-top: 20px;
 }
 
+.grantControls {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.grantUserField {
+  flex: 1;
+  min-width: 0;
+}
+
+.grantUserField label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.grantBulkActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .field {
   margin-bottom: 16px;
 }

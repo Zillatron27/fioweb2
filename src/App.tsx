@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { InviteProvider } from './context/InviteContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
@@ -20,6 +21,7 @@ export function App() {
     <HashRouter>
       <AuthProvider>
         <ThemeProvider>
+        <InviteProvider>
           <Routes>
             {/* Public routes — no sidebar layout */}
             <Route path="/" element={<Home />} />
@@ -40,6 +42,7 @@ export function App() {
               </Route>
             </Route>
           </Routes>
+        </InviteProvider>
         </ThemeProvider>
       </AuthProvider>
     </HashRouter>

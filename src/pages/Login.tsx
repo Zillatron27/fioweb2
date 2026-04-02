@@ -5,12 +5,16 @@ import * as authApi from '../api/auth';
 import { ApiError } from '../api/client';
 import styles from './AuthForm.module.css';
 
+const REMEMBER_KEY = 'fioweb-remember-username';
+
 export function Login() {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
+  const savedUsername = localStorage.getItem(REMEMBER_KEY);
+  const [username, setUsername] = useState(savedUsername ?? '');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(savedUsername !== null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +32,11 @@ export function Login() {
         UserName: username,
         Password: password,
       });
+      if (rememberMe) {
+        localStorage.setItem(REMEMBER_KEY, username);
+      } else {
+        localStorage.removeItem(REMEMBER_KEY);
+      }
       login(username, response.Token, response.IsAdministrator);
       navigate('/account');
     } catch (err) {
@@ -86,7 +95,11 @@ export function Login() {
           </div>
 
           <label className={styles.rememberMe}>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
             <span>Remember me</span>
           </label>
 
