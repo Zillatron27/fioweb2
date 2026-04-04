@@ -174,7 +174,7 @@ export function PermissionsPage() {
                     : grant.GranteeUserName}
                 </span>
                 <span className="badge">
-                  {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS} enabled
+                  {countEnabled(grant.Permissions)}/{TOTAL_PERMISSIONS} enabled
                 </span>
                 <div className={styles.grantActions}>
                   <button
@@ -204,7 +204,7 @@ export function PermissionsPage() {
                   <div className={styles.grantHeader}>
                     <span className={styles.grantee}>{grant.GranteeUserName}</span>
                     <span className="badge">
-                      Group #{grant.GroupId} \u00b7 {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS}
+                      Group #{grant.GroupId} \u00b7 {countEnabled(grant.Permissions)}/{TOTAL_PERMISSIONS}
                     </span>
                   </div>
                 </div>
@@ -230,7 +230,7 @@ export function PermissionsPage() {
                 <span className={styles.grantee}>{grant.GrantorUserName}</span>
                 <span className="badge">
                   {grant.GroupId > 0 ? `Group #${grant.GroupId} · ` : ''}
-                  {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS} enabled
+                  {countEnabled(grant.Permissions)}/{TOTAL_PERMISSIONS} enabled
                 </span>
                 <div className={styles.grantActions}>
                   <button

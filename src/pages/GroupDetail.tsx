@@ -166,7 +166,7 @@ export function GroupDetail() {
             <span className="mono">#{group.GroupId}</span>
             <span className="badge">{ROLE_LABELS[role]}</span>
             <span className={styles.permCount}>
-              {countEnabled(group.Permissions)}/${TOTAL_PERMISSIONS} permissions
+              {countEnabled(group.Permissions)}/{TOTAL_PERMISSIONS} permissions
             </span>
           </div>
         </div>

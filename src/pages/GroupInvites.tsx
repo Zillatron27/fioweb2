@@ -94,7 +94,7 @@ export function GroupInvites() {
                       {invite.Admin ? '☆ Admin' : '• Member'}
                     </span>
                     <span className={styles.permCount}>
-                      {countEnabled(invite.Permissions)}/${TOTAL_PERMISSIONS} permissions
+                      {countEnabled(invite.Permissions)}/{TOTAL_PERMISSIONS} permissions
                     </span>
                   </div>
                 </div>
