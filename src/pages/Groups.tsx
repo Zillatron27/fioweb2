@@ -4,7 +4,7 @@ import { listGroupsWithRoles, listInvites } from '../api/groups';
 import { ApiError } from '../api/client';
 import type { GroupWithRole } from '../types/groups';
 import type { InviteResponse } from '../types/groups';
-import { countEnabled } from '../types/permissions';
+import { countEnabled, TOTAL_PERMISSIONS } from '../types/permissions';
 import styles from './Groups.module.css';
 
 const MAX_GROUPS = 10;
@@ -96,7 +96,7 @@ export function Groups() {
                   <span className={`mono ${styles.groupId}`}>#{group.GroupId}</span>
                   <span className="badge">{ROLE_LABELS[group.role]}</span>
                   <span className={styles.permCount}>
-                    {countEnabled(group.Permissions)}/21 permissions
+                    {countEnabled(group.Permissions)}/${TOTAL_PERMISSIONS} permissions
                   </span>
                 </div>
               </div>

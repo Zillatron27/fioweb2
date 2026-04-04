@@ -11,6 +11,7 @@ interface ConfirmDialogProps {
   requirePassword?: boolean;
   requireConfirmText?: string;
   destructive?: boolean;
+  loading?: boolean;
 }
 
 export function ConfirmDialog({
@@ -23,6 +24,7 @@ export function ConfirmDialog({
   requirePassword = false,
   requireConfirmText,
   destructive = false,
+  loading = false,
 }: ConfirmDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [password, setPassword] = useState('');
@@ -52,6 +54,7 @@ export function ConfirmDialog({
   };
 
   const confirmDisabled =
+    loading ||
     (requirePassword && !password) ||
     (requireConfirmText !== undefined && confirmText !== requireConfirmText);
 

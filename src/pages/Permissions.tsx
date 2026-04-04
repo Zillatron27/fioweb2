@@ -4,8 +4,9 @@ import { ApiError } from '../api/client';
 import { PermissionEditor } from '../components/PermissionEditor';
 import { UserAutocomplete } from '../components/UserAutocomplete';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { Dialog } from '../components/Dialog';
 import type { PermissionResponse, Permissions } from '../types/permissions';
-import { emptyPermissions, fullPermissions, countEnabled } from '../types/permissions';
+import { emptyPermissions, fullPermissions, countEnabled, TOTAL_PERMISSIONS } from '../types/permissions';
 import styles from './Permissions.module.css';
 
 type Tab = 'granted' | 'received';
@@ -173,7 +174,7 @@ export function PermissionsPage() {
                     : grant.GranteeUserName}
                 </span>
                 <span className="badge">
-                  {countEnabled(grant.Permissions)}/21 enabled
+                  {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS} enabled
                 </span>
                 <div className={styles.grantActions}>
                   <button
@@ -203,7 +204,7 @@ export function PermissionsPage() {
                   <div className={styles.grantHeader}>
                     <span className={styles.grantee}>{grant.GranteeUserName}</span>
                     <span className="badge">
-                      Group #{grant.GroupId} \u00b7 {countEnabled(grant.Permissions)}/21
+                      Group #{grant.GroupId} \u00b7 {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS}
                     </span>
                   </div>
                 </div>
@@ -229,7 +230,7 @@ export function PermissionsPage() {
                 <span className={styles.grantee}>{grant.GrantorUserName}</span>
                 <span className="badge">
                   {grant.GroupId > 0 ? `Group #${grant.GroupId} · ` : ''}
-                  {countEnabled(grant.Permissions)}/21 enabled
+                  {countEnabled(grant.Permissions)}/${TOTAL_PERMISSIONS} enabled
                 </span>
                 <div className={styles.grantActions}>
                   <button
@@ -247,122 +248,114 @@ export function PermissionsPage() {
       )}
 
       {/* Grant dialog */}
-      {showGrant && (
-        <div className={styles.overlay}>
-          <div className={`card ${styles.grantDialog}`}>
-            <h2 className={styles.dialogTitle}>Grant Permissions</h2>
+      <Dialog open={showGrant} onClose={() => setShowGrant(false)} className={styles.grantDialog}>
+        <h2 className={styles.dialogTitle}>Grant Permissions</h2>
 
-            {grantError && (
-              <div className="alert alert-error" style={{ marginBottom: 12 }}>{grantError}</div>
-            )}
+        {grantError && (
+          <div className="alert alert-error" style={{ marginBottom: 12 }}>{grantError}</div>
+        )}
 
-            <div className={styles.grantControls}>
-              <div className={styles.grantUserField}>
-                <label htmlFor="grant-user">User</label>
-                <UserAutocomplete
-                  id="grant-user"
-                  value={grantUser}
-                  onChange={setGrantUser}
-                  showPublicOption
-                />
-              </div>
-              <div className={styles.grantBulkActions}>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => setGrantPerms(fullPermissions())}
-                >
-                  Select All
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setGrantPerms(emptyPermissions())}
-                >
-                  Clear All
-                </button>
-              </div>
-            </div>
-
-            <PermissionEditor permissions={grantPerms} onChange={setGrantPerms} />
-
-            <div className={styles.dialogActions}>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setShowGrant(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleGrant}
-                disabled={!grantUser || grantLoading}
-              >
-                {grantLoading ? 'Granting\u2026' : 'Grant'}
-              </button>
-            </div>
+        <div className={styles.grantControls}>
+          <div className={styles.grantUserField}>
+            <label htmlFor="grant-user">User</label>
+            <UserAutocomplete
+              id="grant-user"
+              value={grantUser}
+              onChange={setGrantUser}
+              showPublicOption
+            />
+          </div>
+          <div className={styles.grantBulkActions}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setGrantPerms(fullPermissions())}
+            >
+              Select All
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setGrantPerms(emptyPermissions())}
+            >
+              Clear All
+            </button>
           </div>
         </div>
-      )}
+
+        <PermissionEditor permissions={grantPerms} onChange={setGrantPerms} />
+
+        <div className={styles.dialogActions}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setShowGrant(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleGrant}
+            disabled={!grantUser || grantLoading}
+          >
+            {grantLoading ? 'Granting\u2026' : 'Grant'}
+          </button>
+        </div>
+      </Dialog>
 
       {/* Edit dialog */}
-      {editingGrantee && (
-        <div className={styles.overlay}>
-          <div className={`card ${styles.grantDialog}`}>
-            <h2 className={styles.dialogTitle}>
-              Edit Permissions — {editingGrantee === '*' ? '✱ All Users (Public)' : editingGrantee}
-            </h2>
+      <Dialog open={editingGrantee !== null} onClose={() => setEditingGrantee(null)} className={styles.grantDialog}>
+        <h2 className={styles.dialogTitle}>
+          Edit Permissions — {editingGrantee === '*' ? '✱ All Users (Public)' : editingGrantee}
+        </h2>
 
-            {editError && (
-              <div className="alert alert-error" style={{ marginBottom: 12 }}>{editError}</div>
-            )}
+        {editError && (
+          <div className="alert alert-error" style={{ marginBottom: 12 }}>{editError}</div>
+        )}
 
-            <div className={styles.grantBulkActions} style={{ marginBottom: 16 }}>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setEditPerms(fullPermissions())}
-              >
-                Select All
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setEditPerms(emptyPermissions())}
-              >
-                Clear All
-              </button>
-            </div>
-
-            <PermissionEditor permissions={editPerms} onChange={setEditPerms} />
-
-            <div className={styles.dialogActions}>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setEditingGrantee(null)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleEditSave}
-                disabled={editLoading}
-              >
-                {editLoading ? 'Saving…' : 'Save'}
-              </button>
-            </div>
-          </div>
+        <div className={styles.grantBulkActions} style={{ marginBottom: 16 }}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setEditPerms(fullPermissions())}
+          >
+            Select All
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setEditPerms(emptyPermissions())}
+          >
+            Clear All
+          </button>
         </div>
-      )}
+
+        <PermissionEditor permissions={editPerms} onChange={setEditPerms} />
+
+        <div className={styles.dialogActions}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setEditingGrantee(null)}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleEditSave}
+            disabled={editLoading}
+          >
+            {editLoading ? 'Saving…' : 'Save'}
+          </button>
+        </div>
+      </Dialog>
 
       {/* View dialog (received permissions) */}
-      {viewingGrant && (
-        <div className={styles.overlay}>
-          <div className={`card ${styles.grantDialog}`}>
+      <Dialog open={viewingGrant !== null} onClose={() => setViewingGrant(null)} className={styles.grantDialog}>
+        {viewingGrant && (
+          <>
             <h2 className={styles.dialogTitle}>
               Permissions from {viewingGrant.GrantorUserName}
               {viewingGrant.GroupId > 0 ? ` (Group #${viewingGrant.GroupId})` : ''}
@@ -379,9 +372,9 @@ export function PermissionsPage() {
                 Close
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Dialog>
 
       <ConfirmDialog
         open={revokeTarget !== null}

@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-/** Set to true to bypass admin check during UI development. */
-const DEV_FORCE_ADMIN = false;
+/** Bypasses admin check in dev mode only. Automatically false in production builds. */
+const DEV_FORCE_ADMIN = import.meta.env.DEV;
 
 export function AdminRoute() {
   const { isAdmin } = useAuth();

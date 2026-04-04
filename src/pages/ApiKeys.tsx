@@ -4,6 +4,7 @@ import { listApiKeys, createApiKey, revokeApiKey } from '../api/apikeys';
 import { ApiError } from '../api/client';
 import { CopyButton } from '../components/CopyButton';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { Dialog } from '../components/Dialog';
 import type { APIKey } from '../types/apikeys';
 import styles from './ApiKeys.module.css';
 
@@ -28,6 +29,21 @@ export function ApiKeys() {
   // Revoke dialog state
   const [revokeTarget, setRevokeTarget] = useState<APIKey | null>(null);
   const [revokeError, setRevokeError] = useState<string | null>(null);
+
+  // Key visibility
+  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
+
+  const toggleReveal = (keyId: string) => {
+    setRevealedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(keyId)) next.delete(keyId);
+      else next.add(keyId);
+      return next;
+    });
+  };
+
+  const maskKey = (key: string) =>
+    key.length > 4 ? `${'•'.repeat(8)}${key.slice(-4)}` : '••••';
 
   const fetchKeys = useCallback(async () => {
     try {
@@ -183,7 +199,16 @@ export function ApiKeys() {
                   </span>
                 </div>
                 <div className={styles.keyValue}>
-                  <code className="mono">{key.Key}</code>
+                  <code className="mono">
+                    {revealedKeys.has(key.Key) ? key.Key : maskKey(key.Key)}
+                  </code>
+                  <button
+                    type="button"
+                    className={styles.revealBtn}
+                    onClick={() => toggleReveal(key.Key)}
+                  >
+                    {revealedKeys.has(key.Key) ? 'Hide' : 'Show'}
+                  </button>
                   <CopyButton text={key.Key} label="Copy" />
                 </div>
               </div>
@@ -215,84 +240,80 @@ export function ApiKeys() {
       </button>
 
       {/* Create dialog */}
-      {showCreate && (
-        <div className={styles.overlay}>
-          <div className={`card ${styles.createDialog}`}>
-            <h2 className={styles.dialogTitle}>Create API Key</h2>
+      <Dialog open={showCreate} onClose={() => { setShowCreate(false); setCreateError(null); }} className={styles.createDialog}>
+        <h2 className={styles.dialogTitle}>Create API Key</h2>
 
-            {createError && (
-              <div className="alert alert-error" style={{ marginBottom: 16 }}>
-                {createError}
-              </div>
-            )}
-
-            <form onSubmit={handleCreate}>
-              <div className={styles.field}>
-                <label htmlFor="app-name">Application Name</label>
-                <input
-                  id="app-name"
-                  type="text"
-                  value={createAppName}
-                  onChange={(e) => setCreateAppName(e.target.value)}
-                  placeholder="e.g. Helm, My Spreadsheet"
-                  autoComplete="off"
-                  required
-                  maxLength={128}
-                />
-              </div>
-
-              <div className={styles.toggleField}>
-                <label htmlFor="allow-writes" className={styles.toggleLabel}>
-                  <span>Allow Writes</span>
-                  <span className={styles.toggleHint}>
-                    Write access lets tools modify your data. Only enable if the
-                    tool requires it.
-                  </span>
-                </label>
-                <input
-                  id="allow-writes"
-                  type="checkbox"
-                  checked={createAllowWrites}
-                  onChange={(e) => setCreateAllowWrites(e.target.checked)}
-                  className={styles.toggle}
-                />
-              </div>
-
-              <div className={styles.field}>
-                <label htmlFor="create-password">Password</label>
-                <input
-                  id="create-password"
-                  type="password"
-                  value={createPassword}
-                  onChange={(e) => setCreatePassword(e.target.value)}
-                  autoComplete="current-password"
-                  required
-                />
-              </div>
-
-              <div className={styles.dialogActions}>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    setShowCreate(false);
-                    setCreateError(null);
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={createLoading}
-                >
-                  {createLoading ? 'Creating\u2026' : 'Create Key'}
-                </button>
-              </div>
-            </form>
+        {createError && (
+          <div className="alert alert-error" style={{ marginBottom: 16 }}>
+            {createError}
           </div>
-        </div>
-      )}
+        )}
+
+        <form onSubmit={handleCreate}>
+          <div className={styles.field}>
+            <label htmlFor="app-name">Application Name</label>
+            <input
+              id="app-name"
+              type="text"
+              value={createAppName}
+              onChange={(e) => setCreateAppName(e.target.value)}
+              placeholder="e.g. Helm, My Spreadsheet"
+              autoComplete="off"
+              required
+              maxLength={128}
+            />
+          </div>
+
+          <div className={styles.toggleField}>
+            <label htmlFor="allow-writes" className={styles.toggleLabel}>
+              <span>Allow Writes</span>
+              <span className={styles.toggleHint}>
+                Write access lets tools modify your data. Only enable if the
+                tool requires it.
+              </span>
+            </label>
+            <input
+              id="allow-writes"
+              type="checkbox"
+              checked={createAllowWrites}
+              onChange={(e) => setCreateAllowWrites(e.target.checked)}
+              className={styles.toggle}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="create-password">Password</label>
+            <input
+              id="create-password"
+              type="password"
+              value={createPassword}
+              onChange={(e) => setCreatePassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+          </div>
+
+          <div className={styles.dialogActions}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setShowCreate(false);
+                setCreateError(null);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={createLoading}
+            >
+              {createLoading ? 'Creating\u2026' : 'Create Key'}
+            </button>
+          </div>
+        </form>
+      </Dialog>
 
       {/* Revoke confirmation dialog */}
       <ConfirmDialog

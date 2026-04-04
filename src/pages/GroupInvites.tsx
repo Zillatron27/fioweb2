@@ -4,7 +4,7 @@ import { listInvites, acceptInvite, rejectInvite } from '../api/groups';
 import { ApiError } from '../api/client';
 import { PermissionEditor } from '../components/PermissionEditor';
 import type { InviteResponse } from '../types/groups';
-import { countEnabled } from '../types/permissions';
+import { countEnabled, TOTAL_PERMISSIONS } from '../types/permissions';
 import { useInvites } from '../context/InviteContext';
 import styles from './GroupInvites.module.css';
 
@@ -94,7 +94,7 @@ export function GroupInvites() {
                       {invite.Admin ? '☆ Admin' : '• Member'}
                     </span>
                     <span className={styles.permCount}>
-                      {countEnabled(invite.Permissions)}/21 permissions
+                      {countEnabled(invite.Permissions)}/${TOTAL_PERMISSIONS} permissions
                     </span>
                   </div>
                 </div>

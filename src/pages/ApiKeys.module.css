@@ -74,6 +74,17 @@
   max-width: 280px;
 }
 
+.revealBtn {
+  font-size: 0.75rem;
+  color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.revealBtn:hover {
+  text-decoration: underline;
+}
+
 .newKeyRow {
   display: flex;
   align-items: center;
@@ -95,21 +106,9 @@
   cursor: pointer;
 }
 
-/* Create dialog overlay */
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 16px;
-}
-
 .createDialog {
   max-width: 440px;
-  width: 100%;
+  width: calc(100vw - 32px);
 }
 
 .dialogTitle {

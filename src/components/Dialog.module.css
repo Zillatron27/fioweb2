@@ -1,0 +1,13 @@
+.dialog {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}

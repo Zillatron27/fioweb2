@@ -16,13 +16,26 @@ const STORAGE_KEY = 'fioweb-session';
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return typeof payload.exp === 'number' && payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+}
+
 function loadSession(): AuthSession | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as AuthSession;
-    if (parsed.username && parsed.token) return parsed;
-    return null;
+    if (!parsed.username || !parsed.token) return null;
+    if (isTokenExpired(parsed.token)) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return parsed;
   } catch {
     localStorage.removeItem(STORAGE_KEY);
     return null;

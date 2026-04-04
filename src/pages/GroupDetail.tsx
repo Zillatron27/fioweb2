@@ -7,7 +7,7 @@ import { UserAutocomplete } from '../components/UserAutocomplete';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import type { GroupDetailResponse } from '../types/groups';
 import type { GroupRole } from '../types/groups';
-import { countEnabled } from '../types/permissions';
+import { countEnabled, TOTAL_PERMISSIONS } from '../types/permissions';
 import styles from './GroupDetail.module.css';
 
 export function GroupDetail() {
@@ -166,7 +166,7 @@ export function GroupDetail() {
             <span className="mono">#{group.GroupId}</span>
             <span className="badge">{ROLE_LABELS[role]}</span>
             <span className={styles.permCount}>
-              {countEnabled(group.Permissions)}/21 permissions
+              {countEnabled(group.Permissions)}/${TOTAL_PERMISSIONS} permissions
             </span>
           </div>
         </div>

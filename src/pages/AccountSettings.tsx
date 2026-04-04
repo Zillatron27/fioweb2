@@ -39,6 +39,7 @@ export function AccountSettings() {
   // Delete account
   const [deleteState, setDeleteState] = useState<DeleteState>('idle');
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handleAnonSave = async () => {
     if (anonAllow === null) return;
@@ -83,6 +84,7 @@ export function AccountSettings() {
     }
     if (deleteState === 'entering-password' && password) {
       setDeleteError(null);
+      setDeleteLoading(true);
       deleteAccount(password)
         .then(() => {
           logout();
@@ -92,6 +94,9 @@ export function AccountSettings() {
             ? (err.status === 401 ? 'Incorrect password.' : err.message)
             : 'Failed to delete account.');
           setDeleteState('idle');
+        })
+        .finally(() => {
+          setDeleteLoading(false);
         });
     }
   };
@@ -229,11 +234,12 @@ export function AccountSettings() {
         open={deleteState === 'entering-password'}
         title="Confirm Deletion"
         message="Enter your password to confirm account deletion."
-        confirmLabel="Delete Account"
+        confirmLabel={deleteLoading ? 'Deleting…' : 'Delete Account'}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteState('idle')}
         requirePassword
         destructive
+        loading={deleteLoading}
       />
     </div>
   );

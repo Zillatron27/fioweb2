@@ -151,3 +151,7 @@ export function countEnabled(perms: Permissions): number {
 export function countCategoryEnabled(category: Record<string, boolean>): number {
   return Object.values(category).filter(Boolean).length;
 }
+
+/** Total number of permission booleans across all categories. */
+export const TOTAL_PERMISSIONS = Object.values(fullPermissions())
+  .reduce((sum, cat) => sum + Object.keys(cat).length, 0);
